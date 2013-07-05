@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir=".">
+	
+    <target name = "makejar" >
+        <jar destfile="jar/lud.stgn.jar" >
+            <fileset dir="bin"/>
+            <fileset dir="src"/>
+        </jar>
+    </target>
+
+	<target name="signjar">
+	   <property name="aliasName" value="aliasName"/>
+	   <property name="password" value="p1q1nggi1dje2lldjxn0sam4fhh8re8iuslcneo"/>
+	   <property name="keystoreFileName" location="keystoreFileName"/>
+	   <property name="firstNameSurName" value="FirstName Lastname"/>
+	   <property name="organisationUnitOrDepartment" value=""/>
+	   <property name="organisationName" value=""/>
+	   <property name="cityOrLocality" value="City"/>
+	   <property name="stateOrProvince" value=""/>
+	   <property name="twoLetterJavaLocaleCountryCode" value="US"/>
+
+	   <delete file="${keystoreFileName}" failonerror="false" />
+	   <genkey alias="${aliasName}" storepass="${password}" keystore="${keystoreFileName}">
+	      <dname>
+    	      <param name="CN" value="${firstNameSurName}"/>
+    	      <param name="OU" value="${organisationUnitOrDepartment}"/>
+    	      <param name="O"  value="${organisationName}"/>
+    	      <param name="L"  value="${cityOrLocality}"/>
+    	      <param name="ST"  value="${stateOrProvince}"/>
+    	      <param name="C"  value="${twoLetterJavaLocaleCountryCode}"/>   
+	      </dname>
+	   </genkey>
+
+	   <signjar destDir="jar"
+	      alias="${aliasName}" keystore="${keystoreFileName}"
+	      storepass="${password}"
+	      preservelastmodified="true">
+	      <path>
+	          <fileset dir="jar" includes="**/*.jar" />
+	      </path>
+	      <flattenmapper />
+	   </signjar>
+
+	</target>
+	
+</project>

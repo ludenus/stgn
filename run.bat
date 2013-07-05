@@ -1,0 +1,1 @@
+java.exe -cp jar\lud.stgn.jar lud.stgn.Stgnc --conceal secret.jpg --into container.png
