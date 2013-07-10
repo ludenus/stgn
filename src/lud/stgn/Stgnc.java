@@ -173,7 +173,7 @@ public class Stgnc {
 				+ "\n"
 				+ "\n    secret.info   - an existing file, we want to hide into container"
 				+ "\n    container.png - javax.imageio readable image file (jpg/png/gif/bmp)"
-				+ "\n    bitmask       - hex integer, bits for each ARGB pixel used to hide secret info. deafult: 0x03030303"
+				+ "\n    bitmask       - hex integer, bits for each ARGB pixel used to hide secret info. default: 0x03030303"
 				+ "\n    saveas        - file to be created. foramt is always 8bit ARGB png. default: ihaveasecret.png"
 				+ "\n"
 				+ "\nStgn --unveil  hidden.info --from ihaveasecret.png --size 100000 [ --bitmask 0x03030303 ]"
