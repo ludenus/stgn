@@ -104,7 +104,7 @@ How to run
 
 There are three options:
 
-1. using **ant**:
+1. using __ant__:
 
     ```ant runtest``` - to run end-to-end test
 
@@ -112,7 +112,7 @@ There are three options:
 
     ```ant rungui``` - to run GUI application
 
-2. using provided ***.bat** files:
+2. using provided __*.bat__ files:
 
     ```run_test.bat``` which runs: ```java -cp jar/lud.stgn.jar lud.stgn.Test```
 
@@ -120,7 +120,7 @@ There are three options:
 
     ```run_gui.bat``` which runs:   ```java -cp jar/lud.stgn.jar lud.stgn.StgnGUI```
 
-3. using java web start and provided ***.jnlp** file:
+3. using java web start and provided __*.jnlp__ file:
     
     double click ```StgnGUI.jnlp``` or try something like ```javaws StgnGUI.jnlp```
 
