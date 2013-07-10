@@ -1,0 +1,1 @@
+java -cp jar/lud.stgn.jar lud.stgn.StgnGUI

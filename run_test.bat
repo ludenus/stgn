@@ -1,1 +1,1 @@
-java -cp jar/lud.stgn.jar lud.stgn.Test
+java -cp jar/lud.stgn.jar lud.stgn.Test 
