@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp codebase="jar">
+	<information>
+		<title>StgnGUI</title>
+		<vendor>vendor</vendor>
+		<offline-allowed/>
+	</information>
+	<security>
+		<all-permissions/>
+	</security>
+	<resources>
+		<j2se version="1.5+"/>
+		<jar href="lud.stgn.jar"/>
+	</resources>
+	<application-desc main-class="lud.stgn.StgnGUI"/>
+</jnlp>
