@@ -1,46 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project basedir=".">
-	
-    <target name = "makejar" >
-        <jar destfile="jar/lud.stgn.jar" >
-            <fileset dir="bin"/>
-            <fileset dir="src"/>
-        </jar>
-    </target>
+	<!-- properties for signing jar file -->
+	<property name="aliasName" value="setYourOwnAliasName"/>
+	<property name="password" value="setYourOwnPassword"/>
+	<property name="keystoreFileName" location="setYourOwnKeystoreFileName"/>
+	<property name="firstNameLastName" value="setYourOwnFirstNameLastName"/>
+	<property name="organisationUnitOrDepartment" value="setYourOwnOrganisationUnitOrDepartment"/>
+	<property name="organisationName" value="setYourOwnorganisationName"/>
+	<property name="cityOrLocality" value="setYourOwnCityOrLocality"/>
+	<property name="stateOrProvince" value="setYourOwnStateOrProvince"/>
+	<property name="twoLetterJavaLocaleCountryCode" value="QZ"/>
+
+	<target name="makeall" depends="clean,compile,makejar,genkey,signjar">
+	</target>
+
+	<target name="clean">
+		<delete failonerror="false" verbose="true">
+			<fileset dir="jar" includes="**/*"/>
+			<fileset dir="bin" includes="**/*"/>
+		</delete>
+		<delete file="${keystoreFileName}" failonerror="false" verbose="true"/>
+		<delete file="revealed.jpg" failonerror="false"/>
+		<delete file="modified.png" failonerror="false"/>
+		<delete file="ihaveasecret_mask(0x03030303)_size(209157).png" failonerror="false"/>
+		<delete file="stdout.txt" failonerror="false"/>
+		<delete file="stderr.txt" failonerror="false"/>
+	</target>
+
+	<target name="compile" >
+		<mkdir dir="bin"/>
+		<javac srcdir="src" destdir="bin" includeantruntime="false" verbose="false"/>
+	</target>
+
+	<target name = "makejar" >
+		<jar destfile="jar/lud.stgn.jar">
+			<fileset dir="bin"/>
+			<fileset dir="src"/>
+			<!-- comment this line to exlude source files from jar -->
+		</jar>
+	</target>
+
+	<target name="genkey">
+		<genkey alias="${aliasName}" storepass="${password}" keystore="${keystoreFileName}">
+			<dname>
+				<param name="CN" value="${firstNameLastName}"/>
+				<param name="OU" value="${organisationUnitOrDepartment}"/>
+				<param name="O"  value="${organisationName}"/>
+				<param name="L"  value="${cityOrLocality}"/>
+				<param name="ST" value="${stateOrProvince}"/>
+				<param name="C"  value="${twoLetterJavaLocaleCountryCode}"/>   
+			</dname>
+		</genkey>
+	</target>
 
 	<target name="signjar">
-	   <property name="aliasName" value="aliasName"/>
-	   <property name="password" value="p1q1nggi1dje2lldjxn0sam4fhh8re8iuslcneo"/>
-	   <property name="keystoreFileName" location="keystoreFileName"/>
-	   <property name="firstNameSurName" value="FirstName Lastname"/>
-	   <property name="organisationUnitOrDepartment" value=""/>
-	   <property name="organisationName" value=""/>
-	   <property name="cityOrLocality" value="City"/>
-	   <property name="stateOrProvince" value=""/>
-	   <property name="twoLetterJavaLocaleCountryCode" value="US"/>
+		<signjar destDir="jar" alias="${aliasName}" keystore="${keystoreFileName}" storepass="${password}" preservelastmodified="true">
+			<path>
+				<fileset dir="jar" includes="**/*.jar" />
+			</path>
+			<flattenmapper />
+		</signjar>
+	</target>
 
-	   <delete file="${keystoreFileName}" failonerror="false" />
-	   <genkey alias="${aliasName}" storepass="${password}" keystore="${keystoreFileName}">
-	      <dname>
-    	      <param name="CN" value="${firstNameSurName}"/>
-    	      <param name="OU" value="${organisationUnitOrDepartment}"/>
-    	      <param name="O"  value="${organisationName}"/>
-    	      <param name="L"  value="${cityOrLocality}"/>
-    	      <param name="ST"  value="${stateOrProvince}"/>
-    	      <param name="C"  value="${twoLetterJavaLocaleCountryCode}"/>   
-	      </dname>
-	   </genkey>
+	<target name="runtest">
+		<java classpath="jar/lud.stgn.jar" classname="lud.stgn.Test" fork="true"/>
+	</target>
 
-	   <signjar destDir="jar"
-	      alias="${aliasName}" keystore="${keystoreFileName}"
-	      storepass="${password}"
-	      preservelastmodified="true">
-	      <path>
-	          <fileset dir="jar" includes="**/*.jar" />
-	      </path>
-	      <flattenmapper />
-	   </signjar>
-
+	<target name="runconsole">
+		<java classpath="jar/lud.stgn.jar" classname="lud.stgn.Stgnc" fork="true" output="stdout.txt" error="stderr.txt">
+			<arg line="--conceal secret.jpg --into container.png" />
+		</java>
+		<loadfile property="stdout"  srcFile="stdout.txt" failonerror="false" quiet="true"/>
+		<loadfile property="stderr"  srcFile="stderr.txt" failonerror="false" quiet="true"/>
+		<echo message="stdout: ${stdout}"/>
+		<echo message="stderr: ${stderr}"/>
+	</target>	
+	
+	<target name="rungui">
+		<java classpath="jar/lud.stgn.jar" classname="lud.stgn.StgnGUI" fork="true" spawn="true"/>
 	</target>
 	
 </project>
